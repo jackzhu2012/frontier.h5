@@ -2100,11 +2100,6 @@ passthrough-counter@^1.0.0:
   resolved "https://registry.npmmirror.com/passthrough-counter/-/passthrough-counter-1.0.0.tgz#1967d9e66da572b5c023c787db112a387ab166fa"
   integrity sha512-Wy8PXTLqPAN0oEgBrlnsXPMww3SYJ44tQ8aVrGAI4h4JZYCS0oYqsPqtPR8OhJpv6qFbpbB7XAn0liKV7EXubA==
 
-path-browserify@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.npmmirror.com/path-browserify/-/path-browserify-1.0.1.tgz#d98454a9c3753d5790860f16f68867b9e46be1fd"
-  integrity sha512-b7uo2UCUOYZcnF/3ID0lulOJi/bafxa1xPe7ZPsammBSpjSWQkjNxlt635YGS2MiR9GjvuXCtz2emr3jbsz98g==
-
 path-is-absolute@^1.0.0:
   version "1.0.1"
   resolved "https://registry.npmmirror.com/path-is-absolute/-/path-is-absolute-1.0.1.tgz#174b9268735534ffbc7ace6bf53a5a9e1b5c5f5f"
