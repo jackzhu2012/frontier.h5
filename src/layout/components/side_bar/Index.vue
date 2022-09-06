@@ -1,25 +1,24 @@
 <template>
   <div :class="{ 'has-logo': showLogo }" class="sideWrap">
     <SidebarLogo v-if="showLogo" :collapse="isCollapse" />
-    <el-scrollbar wrap-class="scrollbar-wrapper">
-      <el-menu
-        :collapse="!isCollapse"
-        :unique-opened="false"
-        :default-active="activeMenu"
-        :background-color="variables.menuBg"
-        :text-color="variables.menuText"
-        :active-text-color="menuActiveTextColor"
-        mode="vertical"
-      >
-        <Sidebar-Item
-          v-for="route in routes"
-          :key="route.path"
-          :item="route"
-          :base-path="route.path"
-          :is-collapse="isCollapse"
-        />
-      </el-menu>
-    </el-scrollbar>
+    <!-- <el-scrollbar wrap-class="scrollbar-wrapper"> -->
+    <el-menu
+      :unique-opened="false"
+      :default-active="activeMenu"
+      :background-color="variables.menuBg"
+      :text-color="variables.menuText"
+      :active-text-color="menuActiveTextColor"
+      mode="vertical"
+    >
+      <Sidebar-Item
+        v-for="route in routes"
+        :key="route.path"
+        :item="route"
+        :base-path="route.path"
+        :is-collapse="isCollapse"
+      />
+    </el-menu>
+    <!-- </el-scrollbar> -->
   </div>
 </template>
 
@@ -42,6 +41,7 @@ export default defineComponent({
       return store.state.app.sideBar;
     });
     const routes = computed(() => {
+      console.log(store.state.permission.routes, "###########");
       return store.state.permission.routes;
     });
     const showLogo = computed(() => {

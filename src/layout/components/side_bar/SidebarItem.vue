@@ -17,21 +17,17 @@
           :index="resolvePath(theOnlyOneChild.path)"
           :class="{ 'submenu-title-noDropdown': isFirstLevel }"
         >
-          <svg
-            v-if="theOnlyOneChild.meta.icon"
-            class="icon"
-            aria-hidden="true"
-            font-size="17px"
-          >
+          <svg v-if="theOnlyOneChild.meta.icon" class="icon" font-size="17px">
             <use :xlink:href="theOnlyOneChild.meta.icon" />
           </svg>
+          <!-- <div class="el-icon-house"></div> -->
           <span v-if="theOnlyOneChild.meta.title">{{
             theOnlyOneChild.meta.title
           }}</span>
         </el-menu-item>
       </SidebarItemLink>
     </template>
-    <el-submenu v-else :index="resolvePath(item.path)" popper-append-to-body>
+    <el-sub-menu v-else :index="resolvePath(item.path)" popper-append-to-body>
       <template #title>
         <svg
           v-if="item.meta && item.meta.icon"
@@ -39,8 +35,9 @@
           aria-hidden="true"
           font-size="16px"
         >
-          <use :xlink:href="item.meta.icon" />
+          <use :xlink:href="theOnlyOneChild.meta.icon" />
         </svg>
+        <!-- <i class="el-icon-house"></i> -->
         <span v-if="item.meta && item.meta.title">{{ item.meta.title }}</span>
       </template>
       <template v-if="item.children">
@@ -54,7 +51,7 @@
           class="nest-menu"
         />
       </template>
-    </el-submenu>
+    </el-sub-menu>
   </div>
 </template>
 
@@ -200,6 +197,11 @@ export default defineComponent({
 <style lang="scss" scoped>
 svg {
   margin-right: 16px;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
 }
 
 .simple-mode {

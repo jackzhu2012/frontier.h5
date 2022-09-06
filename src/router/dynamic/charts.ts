@@ -15,8 +15,7 @@ const chartsRouter: Array<RouteRecordRaw> = [
     redirect: 'noredirect',
     name: 'Charts',
     meta: {
-      title: 'charts',
-      icon: '#iconchart1'
+      title: 'charts'
     },
     children: [
       {
@@ -28,7 +27,8 @@ const chartsRouter: Array<RouteRecordRaw> = [
         name: 'BarChartDemo',
         meta: {
           title: '柱状图',
-          noCache: true
+          noCache: true,
+          icon: '#el-icon-shopping-bag-2'
         }
       },
       {

@@ -34,6 +34,7 @@ export const filterDynamicRoutes = (routes: RouteRecordRaw[], roles: string[]) =
         r.children = filterDynamicRoutes(r.children, roles)
       }
       res.push(r)
+      console.log(res)
     }
   })
   return res

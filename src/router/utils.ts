@@ -13,5 +13,6 @@ export const loadModuleRouters = (path: 'static' | 'dynamic'): RouteRecordRaw[] 
     if (file === './index.ts') return
     modules.push(routerFiles[file].default[0])
   })
+  console.log(modules,'@@@@@@@')
   return modules
 }

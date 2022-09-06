@@ -37,7 +37,7 @@ export default defineComponent({
   setup(props) {
     const router = useRouter()
     const push = () => {
-      console.log(props.to)
+      console.log(props.to,11111)
       router.push(props.to).catch((err) => {
         console.log(err)
       })
