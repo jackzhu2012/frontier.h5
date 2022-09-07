@@ -1,10 +1,5 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <div
-      v-if="classObj.mobile && sideBar.isOpen"
-      class="drawer-bg"
-      @click="handleClickOutside"
-    />
     <SideBar class="sidebar-container" />
     <div :class="{ hasTagsView: showTagsView }" class="main-container">
       <div :class="{ 'fixed-header': fixedHeader }">
@@ -19,12 +14,10 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {
-  defineComponent,
   computed,
   reactive,
-  toRefs,
   onBeforeMount,
   onBeforeUnmount,
   onMounted,
@@ -37,96 +30,66 @@ import { AppActionTypes } from "@/store/modules/app/action-types";
 import RightPanel from "@/components/right_panel/Index.vue";
 import resize from "./resize";
 
-export default defineComponent({
-  name: "Layout",
-  components: {
-    AppMain,
-    SideBar,
-    Navbar,
-    TagsView,
-    RightPanel,
-    Settings,
+const {
+  sideBar,
+  device,
+  addEventListenerOnResize,
+  resizeMounted,
+  removeEventListenerResize,
+  watchRouter,
+} = resize();
+
+const store = useStore();
+
+const state = reactive({
+  handleClickOutside: () => {
+    store.dispatch(AppActionTypes.ACTION_CLOSE_SIDEBAR, false);
   },
-  setup() {
-    const { t } = useI18n();
-    const {
-      sideBar,
-      device,
-      addEventListenerOnResize,
-      resizeMounted,
-      removeEventListenerResize,
-      watchRouter,
-    } = resize();
-    const store = useStore();
+});
 
-    const state = reactive({
-      handleClickOutside: () => {
-        store.dispatch(AppActionTypes.ACTION_CLOSE_SIDEBAR, false);
-      },
-    });
+const classObj = computed(() => {
+  return {
+    hideSidebar: !sideBar.value.isOpen,
+    openSidebar: sideBar.value.isOpen,
+    withoutAnimation: sideBar.value.withoutAnimation,
+    mobile: device.value === DeviceType.Mobile,
+  };
+});
 
-    const classObj = computed(() => {
-      return {
-        hideSidebar: !sideBar.value.isOpen,
-        openSidebar: sideBar.value.isOpen,
-        withoutAnimation: sideBar.value.withoutAnimation,
-        mobile: device.value === DeviceType.Mobile,
-      };
-    });
+const showSettings = computed(() => {
+  return store.state.settings.showSettings;
+});
+const showTagsView = computed(() => {
+  return store.state.settings.showTagsView;
+});
+const fixedHeader = computed(() => {
+  return store.state.settings.fixedHeader;
+});
 
-    const showSettings = computed(() => {
-      return store.state.settings.showSettings;
-    });
-    const showTagsView = computed(() => {
-      return store.state.settings.showTagsView;
-    });
-    const fixedHeader = computed(() => {
-      return store.state.settings.fixedHeader;
-    });
-    watchRouter();
-    onBeforeMount(() => {
-      addEventListenerOnResize();
-    });
+watchRouter();
 
-    onMounted(() => {
-      resizeMounted();
-    });
+onBeforeMount(() => {
+  addEventListenerOnResize();
+});
 
-    onBeforeUnmount(() => {
-      removeEventListenerResize();
-    });
+onMounted(() => {
+  resizeMounted();
+});
 
-    return {
-      t,
-      classObj,
-      sideBar,
-      showSettings,
-      showTagsView,
-      fixedHeader,
-      ...toRefs(state),
-    };
-  },
+onBeforeUnmount(() => {
+  removeEventListenerResize();
 });
 </script>
 
 <style lang="scss" scoped>
 @import "@/styles/mixins";
 @import "@/styles/variables";
+
 .app-wrapper {
   @include clearfix;
   position: relative;
   height: 100%;
   width: 100%;
-}
-
-.drawer-bg {
-  background: #000;
-  opacity: 0.3;
-  width: 100%;
-  top: 0;
-  height: 100%;
-  position: absolute;
-  z-index: 999;
 }
 
 .main-container {
@@ -161,11 +124,11 @@ export default defineComponent({
 
 .hideSidebar {
   .main-container {
-    margin-left: $sideBarWidth !important;
+    margin-left: 60px !important;
   }
 
   .sidebar-container {
-    width: $sideBarWidth;
+    width: 60px !important;
   }
 
   .fixed-header {

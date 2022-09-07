@@ -65,60 +65,42 @@
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
 import BreadCrumb from "@/components/bread-crumb/Index.vue";
 import Hamburger from "@/components/hamburger/Index.vue";
 import Screenfull from "@/components/screenfull/Index.vue";
 import LangSelect from "@/components/lang_select/Index.vue";
 import SizeSelect from "@/components/size_select/Index.vue";
 
-import { computed, reactive, toRefs } from "vue";
+import { computed, reactive } from "vue";
 import { useStore } from "@/store";
 import { useI18n } from "vue-i18n";
 import { AppActionTypes } from "@/store/modules/app/action-types";
 import { UserActionTypes } from "@/store/modules/user/types";
 import { useRoute, useRouter } from "vue-router";
-export default {
-  components: {
-    BreadCrumb,
-    Hamburger,
-    Screenfull,
-    LangSelect,
-    SizeSelect,
-  },
-  setup() {
-    const store = useStore();
-    const route = useRoute();
-    const router = useRouter();
-    const { t } = useI18n();
-    const sideBar = computed(() => {
-      return store.state.app.sideBar;
-    });
-    const device = computed(() => {
-      return store.state.app.device.toString();
-    });
-    const avatar = computed(() => {
-      return store.state.user.avatar;
-    });
-    const state = reactive({
-      toggleSideBar: () => {
-        store.dispatch(AppActionTypes.ACTION_TOGGLE_SIDEBAR, false);
-      },
-      logout: () => {
-        useStore().dispatch(UserActionTypes.ACTION_LOGIN_OUT);
-        router.push(`/login?redirect=${route.fullPath}`).catch((err) => {
-          console.warn(err);
-        });
-      },
-    });
-    return {
-      t,
-      sideBar,
-      device,
-      avatar,
-      ...toRefs(state),
-    };
-  },
+
+const store = useStore();
+const route = useRoute();
+const router = useRouter();
+const { t } = useI18n();
+const sideBar = computed(() => {
+  return store.state.app.sideBar;
+});
+const device = computed(() => {
+  return store.state.app.device.toString();
+});
+const avatar = computed(() => {
+  return store.state.user.avatar;
+});
+const toggleSideBar = () => {
+  store.dispatch(AppActionTypes.ACTION_TOGGLE_SIDEBAR, false);
+};
+
+const logout = () => {
+  useStore().dispatch(UserActionTypes.ACTION_LOGIN_OUT);
+  router.push(`/login?redirect=${route.fullPath}`).catch((err) => {
+    console.warn(err);
+  });
 };
 </script>
 
@@ -127,7 +109,6 @@ export default {
   height: 50px;
   overflow: hidden;
   position: relative;
-  background: #fff;
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 
   .hamburger-container {

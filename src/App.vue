@@ -1,10 +1,9 @@
-<script setup lang="ts">
-const env = import.meta.env.VITE_APP_TITLE
-</script>
-
 <template>
   <router-view></router-view>
 </template>
+
+<script setup lang="ts">
+</script>
 
 <style>
 #app {
@@ -12,6 +11,5 @@ const env = import.meta.env.VITE_APP_TITLE
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

@@ -5,6 +5,7 @@
     <el-menu
       :unique-opened="false"
       :default-active="activeMenu"
+      :collapse="false"
       :background-color="variables.menuBg"
       :text-color="variables.menuText"
       :active-text-color="menuActiveTextColor"
@@ -22,64 +23,47 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { computed, defineComponent } from "vue";
 import SidebarItem from "./SidebarItem.vue";
 import SidebarLogo from "./SidebarLogo.vue";
 import variables from "@/styles/_variables.scss";
 import { useStore } from "@/store";
 import { useRoute } from "vue-router";
-export default defineComponent({
-  components: {
-    SidebarItem,
-    SidebarLogo,
-  },
-  setup() {
-    const store = useStore();
-    const route = useRoute();
-    const sideBar = computed(() => {
-      return store.state.app.sideBar;
-    });
-    const routes = computed(() => {
-      console.log(store.state.permission.routes, "###########");
-      return store.state.permission.routes;
-    });
-    const showLogo = computed(() => {
-      return store.state.settings.showSidebarLogo;
-    });
 
-    const menuActiveTextColor = computed(() => {
-      if (store.state.settings.sidebarTextTheme) {
-        return store.state.settings.theme;
-      } else {
-        return variables.menuActiveText;
-      }
-    });
+const store = useStore();
+const route = useRoute();
+const sideBar = computed(() => {
+  return store.state.app.sideBar;
+});
+const routes = computed(() => {
+  console.log(store.state.permission.routes, "###########");
+  return store.state.permission.routes;
+});
+const showLogo = computed(() => {
+  return store.state.settings.showSidebarLogo;
+});
 
-    const activeMenu = computed(() => {
-      const { meta, path } = route;
-      if (meta !== null || meta !== undefined) {
-        if (meta.activeMenu) {
-          return meta.activeMenu;
-        }
-      }
-      return path;
-    });
+const menuActiveTextColor = computed(() => {
+  if (store.state.settings.sidebarTextTheme) {
+    return store.state.settings.theme;
+  } else {
+    return variables.menuActiveText;
+  }
+});
 
-    const isCollapse = computed(() => {
-      return sideBar.value.isOpen;
-    });
+const activeMenu = computed(() => {
+  const { meta, path } = route;
+  if (meta !== null || meta !== undefined) {
+    if (meta.activeMenu) {
+      return meta.activeMenu;
+    }
+  }
+  return path;
+});
 
-    return {
-      sideBar,
-      routes,
-      showLogo,
-      menuActiveTextColor,
-      variables,
-      activeMenu,
-      isCollapse,
-    };
-  },
+const isCollapse = computed(() => {
+  return sideBar.value.isOpen;
 });
 </script>
 
