@@ -1,58 +1,44 @@
 <template>
-  <div
-    v-if="!item.meta || !item.meta.hidden"
-    :class="[
-      isCollapse ? 'simple-mode' : 'full-mode',
-      { 'first-level': isFirstLevel },
-    ]"
+  <el-menu-item
+    v-if="!alwaysShowRootMenu && theOnlyOneChild && !theOnlyOneChild.children"
+    :index="resolvePath(theOnlyOneChild.path)"
+    :class="{ 'submenu-title-noDropdown': isFirstLevel }"
   >
-    <template
-      v-if="!alwaysShowRootMenu && theOnlyOneChild && !theOnlyOneChild.children"
-    >
-      <SidebarItemLink
-        v-if="theOnlyOneChild.meta"
-        :to="resolvePath(theOnlyOneChild.path)"
-      >
-        <el-menu-item
-          :index="resolvePath(theOnlyOneChild.path)"
-          :class="{ 'submenu-title-noDropdown': isFirstLevel }"
-        >
-          <svg v-if="theOnlyOneChild.meta.icon" class="icon" font-size="17px">
+    <!-- <svg v-if="theOnlyOneChild.meta.icon" class="icon" font-size="17px">
             <use :xlink:href="theOnlyOneChild.meta.icon" />
-          </svg>
-          <!-- <div class="el-icon-house"></div> -->
-          <span v-if="theOnlyOneChild.meta.title">{{
-            theOnlyOneChild.meta.title
-          }}</span>
-        </el-menu-item>
-      </SidebarItemLink>
+          </svg> -->
+    <!-- <div class="el-icon-house"></div> -->
+    <template #title>
+      <el-icon><location /></el-icon>
+      <span v-if="theOnlyOneChild.meta">{{ theOnlyOneChild.meta }}</span>
     </template>
-    <el-sub-menu v-else :index="resolvePath(item.path)" popper-append-to-body>
-      <template #title>
-        <svg
+  </el-menu-item>
+  <el-sub-menu v-else :index="resolvePath(item.path)" popper-append-to-body>
+    <template #title>
+      <el-icon><location /></el-icon>
+      <!-- <svg
           v-if="item.meta && item.meta.icon"
           class="icon"
           aria-hidden="true"
           font-size="16px"
         >
           <use :xlink:href="theOnlyOneChild.meta.icon" />
-        </svg>
-        <!-- <i class="el-icon-house"></i> -->
-        <span v-if="item.meta && item.meta.title">{{ item.meta.title }}</span>
-      </template>
-      <template v-if="item.children">
-        <sidebar-item
-          v-for="child in item.children"
-          :key="child.path"
-          :item="child"
-          :is-collapse="isCollapse"
-          :is-first-level="false"
-          :base-path="resolvePath(child.path)"
-          class="nest-menu"
-        />
-      </template>
-    </el-sub-menu>
-  </div>
+        </svg> -->
+      <!-- <i class="el-icon-house"></i> -->
+      <span>{{ item.meta }}x</span>
+    </template>
+    <template v-if="item.children">
+      <sidebar-item
+        v-for="child in item.children"
+        :key="child.path"
+        :item="child"
+        :is-collapse="isCollapse"
+        :is-first-level="false"
+        :base-path="resolvePath(child.path)"
+        class="nest-menu"
+      />
+    </template>
+  </el-sub-menu>
 </template>
 
 <script lang="ts">
@@ -61,7 +47,11 @@ import { computed, defineComponent, PropType } from "vue";
 import { RouteRecordRaw } from "vue-router";
 import { isExternal } from "@/utils/validate";
 import SidebarItemLink from "./SidebarItemLink.vue";
+
+import { Location } from "@element-plus/icons-vue";
+
 import { useI18n } from "vue-i18n";
+
 export default defineComponent({
   props: {
     item: {

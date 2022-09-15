@@ -4,6 +4,8 @@ import { AppMutationTypes } from './mutation-types'
 import { setSidebarStatus, setLanguage, setSize } from '@/utils/cookies'
 
 export type Mutations<S = AppState> = {
+  [AppMutationTypes.TOGGLE_DOCKED_NAV](state: S): void
+  [AppMutationTypes.SET_DOCKED_NAV_STATE](state: S, dockedNavState: 'NORMAL' | 'MINI'): void
   [AppMutationTypes.TOGGLE_SIDEBAR](state: S, withoutAnimation: boolean): void
   [AppMutationTypes.CLOSE_SIDEBAR](state: S, withoutAnimation: boolean): void
   [AppMutationTypes.TOGGLE_DEVICE](state: S, device: DeviceType): void
@@ -12,6 +14,14 @@ export type Mutations<S = AppState> = {
 }
 
 export const mutations: MutationTree<AppState> & Mutations = {
+  [AppMutationTypes.TOGGLE_DOCKED_NAV](state: AppState) {
+    state.dockedNav.state = state.dockedNav.state === 'NORMAL' ? 'MINI' : 'NORMAL'
+  },
+
+  [AppMutationTypes.SET_DOCKED_NAV_STATE](state: AppState, dockedNavState: 'NORMAL' | 'MINI') {
+    state.dockedNav.state = dockedNavState
+  },
+
   [AppMutationTypes.TOGGLE_SIDEBAR](state: AppState, withoutAnimation: boolean) {
     state.sideBar.isOpen = !state.sideBar.isOpen
     state.sideBar.withoutAnimation = withoutAnimation

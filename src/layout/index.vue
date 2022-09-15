@@ -1,6 +1,7 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <SideBar class="sidebar-container" />
+    <!-- <SideBar class="sidebar-container" /> -->
+    <docked-nav :state="nav.state" @DockerStateChanged="nav.toggleState()" />
     <div :class="{ hasTagsView: showTagsView }" class="main-container">
       <div :class="{ 'fixed-header': fixedHeader }">
         <Navbar />
@@ -23,12 +24,14 @@ import {
   onMounted,
 } from "vue";
 import { AppMain, SideBar, Settings, Navbar, TagsView } from "./components";
-import { useStore } from "@/store";
+import DockedNav from "./components/docked_nav/index.vue";
 import { useI18n } from "vue-i18n";
 import { DeviceType } from "@/store/modules/app/state";
 import { AppActionTypes } from "@/store/modules/app/action-types";
+import { AppMutationTypes } from "@/store/modules/app/mutation-types";
 import RightPanel from "@/components/right_panel/Index.vue";
 import resize from "./resize";
+import { DockedNavApi } from "../../api/ui/dockedNav";
 
 const {
   sideBar,
@@ -39,13 +42,7 @@ const {
   watchRouter,
 } = resize();
 
-const store = useStore();
-
-const state = reactive({
-  handleClickOutside: () => {
-    store.dispatch(AppActionTypes.ACTION_CLOSE_SIDEBAR, false);
-  },
-});
+const dockedNavApi = DockedNavApi.getInstance();
 
 const classObj = computed(() => {
   return {
@@ -57,13 +54,17 @@ const classObj = computed(() => {
 });
 
 const showSettings = computed(() => {
-  return store.state.settings.showSettings;
+  return true;
 });
 const showTagsView = computed(() => {
-  return store.state.settings.showTagsView;
+  return true;
 });
 const fixedHeader = computed(() => {
-  return store.state.settings.fixedHeader;
+  return 100;
+});
+
+const nav = computed(() => {
+  return dockedNavApi;
 });
 
 watchRouter();
